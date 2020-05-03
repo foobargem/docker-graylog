@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:3.6.18
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.8
+    environment:
+      - node.name=es01
+      - cluster.name=cluster01
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+
+  graylog:
+    image: graylog2/graylog:3.2.4
+    environment:
+      - GRAYLOG_ROOT_TIMEZONE=Asia/Tokyo
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://EXTERNAL_NAME_OR_IP:9000/
+    links:
+      - mongo
+      - elasticsearch
+    ports:
+      - 9000:9000
+      - 514:514/udp
