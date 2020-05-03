@@ -1,0 +1,2 @@
+# docker-graylog
+graylog example
